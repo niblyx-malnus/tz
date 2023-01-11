@@ -105,6 +105,9 @@
     ::
         [%x %links ~]
       ``timezone-store-links+!>((get-links))
+    ::
+        [%x %abbreviations ~]
+      ``timezone-store-abbreviations+!>((get-abbreviations))
     ==
   ++  on-fail   on-fail:def
 --
@@ -160,6 +163,14 @@
 ::
 ++  get-zone-names  |.(`wain`['utc' ~(tap in ~(key by zones.state))])
 ++  get-links  |.(`(list [@t @t])`~(tap by links.state))
+++  get-abbreviations
+  |.
+  ^-  (list [@t (list @t)])
+  %+  turn
+    ~(val by zones.state)
+  |=  =zone
+  :-  name.zone
+  (turn entries.zone |=(ze=zone-entry abbreviation.ze))
 ::
 ++  convert
   |=  $:  zone-name=@ta
